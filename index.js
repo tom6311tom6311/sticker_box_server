@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import bodyParser from 'body-parser';
 import fs from 'fs';
 import AppConfig from './const/AppConfig.const';
 import imgListRouter from './routes/ImgList.route';
@@ -25,6 +26,11 @@ const port = process.env.PORT || 5000;
 
 // logging middleware
 app.use(morgan('combined'));
+
+// to support URL-encoded bodies
+app.use(bodyParser.urlencoded({ extended: false }));
+// to support JSON-encoded bodies
+app.use(bodyParser.json());
 
 // middleware for serving images and handling image name query
 app.use('/imgs', [imgListRouter, express.static(AppConfig.IMG_DIR)]);
