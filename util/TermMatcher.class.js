@@ -27,8 +27,16 @@ class TermMatcher {
     });
   }
 
+  termExists(term) {
+    return this.termLib.findIndex(({ term: t, fileType }) => `${t}${fileType}` === term) !== -1;
+  }
+
   updateTerms(fileNames) {
     fileNames.forEach((fileName) => {
+      if (this.termExists(fileName)) {
+        console.log(`INFO [TermMatcher]: term already exits: ${fileName}`);
+        return;
+      }
       const term = fileName.slice(0, fileName.lastIndexOf('.'));
       const fileType = fileName.slice(fileName.lastIndexOf('.'));
       this.termLib.push({

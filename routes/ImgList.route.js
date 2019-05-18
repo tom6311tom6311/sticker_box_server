@@ -19,6 +19,7 @@ const storage = multer.diskStorage({
     cb(null, AppConfig.IMG_DIR);
   },
   filename: (req, file, cb) => {
+    TermMatcher.updateTerms([file.originalname]);
     cb(null, file.originalname);
   },
 });
