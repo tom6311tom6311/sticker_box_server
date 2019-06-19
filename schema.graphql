@@ -1,0 +1,55 @@
+type Query {}
+
+type Mutation {
+  login(arg: LoginInput!): LoginResponse!
+  register(arg: RegisterInput!): RegisterResponse!
+}
+
+type Subscription {}
+
+type User {
+  userID: ID!
+  password: String!
+  name: String!
+  owntagIDs: [ID!]!
+  subscribedtagIDs: [ID!]!
+}
+
+type Tag {
+  tagID: ID!
+  ownerID: ID!
+  stickerIDs: [ID!]!
+  key: String!
+}
+
+type Sticker {
+  stickerID: ID!
+  ownerID: ID!
+  tagIDs: [ID!]!
+  description: String!
+}
+
+input LoginInput {
+  userID: ID!
+  password: String!
+}
+
+type LoginResponse {
+  success: Boolean!
+  message: String!
+  name: String
+  owntagIDs: [ID!]
+  subscribedtagIDs: [ID!]
+  sessionID: ID
+}
+
+input RegisterInput {
+  userID: ID!
+  password: String!
+  name: String!
+}
+
+type RegisterResponse {
+  success: Boolean!
+  message: String!
+}
