@@ -27,21 +27,19 @@ class TermMatcher {
     });
   }
 
-  termExists(term) {
-    return this.termLib.findIndex(({ term: t, fileType }) => `${t}${fileType}` === term) !== -1;
+  termExists(id) {
+    return this.termLib.findIndex(({ id: i }) => i === id) !== -1;
   }
 
-  updateTerms(fileNames) {
-    fileNames.forEach((fileName) => {
-      if (this.termExists(fileName)) {
-        console.log(`INFO [TermMatcher]: term already exits: ${fileName}`);
+  updateTerms(terms) {
+    terms.forEach(({ id, term }) => {
+      if (this.termExists(id)) {
+        console.log(`INFO [TermMatcher]: term already exits: ${id}`);
         return;
       }
-      const term = fileName.slice(0, fileName.lastIndexOf('.'));
-      const fileType = fileName.slice(fileName.lastIndexOf('.'));
       this.termLib.push({
+        id,
         term,
-        fileType,
         vecList: nodejieba.cut(term)
           .map(w => this.wordLib[w])
           .filter(v => v !== undefined),
@@ -56,13 +54,13 @@ class TermMatcher {
       .filter(v => v !== undefined);
     if (term === '' || vecList.length === 0) {
       return randomChoice(
-        this.termLib.map(({ term: t, fileType }) => `${t}${fileType}`),
+        this.termLib.map(({ id }) => id),
         num,
       );
     }
     return this.termLib
       .sort((a, b) => similarity(vecList, b.vecList) - similarity(vecList, a.vecList))
-      .map(({ term: t, fileType }) => `${t}${fileType}`)
+      .map(({ id }) => id)
       .slice(0, num);
   }
 }

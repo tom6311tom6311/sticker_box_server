@@ -1,11 +1,15 @@
-# type Query {}
+type Query {
+  imgSearch(searchTerm: String): [Sticker!]!
+}
 
 type Mutation {
   login(arg: LoginInput!): LoginResponse!
   register(arg: RegisterInput!): RegisterResponse!
 }
 
-# type Subscription {}
+type Subscription {
+  login(arg: LoginInput!): LoginResponse!
+}
 
 type User {
   userID: ID!
@@ -27,6 +31,7 @@ type Sticker {
   ownerID: ID!
   tagIDs: [ID!]!
   description: String!
+  type: String!
 }
 
 input LoginInput {
