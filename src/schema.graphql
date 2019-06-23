@@ -1,11 +1,11 @@
-type Query {}
+# type Query {}
 
 type Mutation {
   login(arg: LoginInput!): LoginResponse!
   register(arg: RegisterInput!): RegisterResponse!
 }
 
-type Subscription {}
+# type Subscription {}
 
 type User {
   userID: ID!
