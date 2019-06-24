@@ -69,7 +69,7 @@ class UserStore {
       };
     }
 
-    if (!AppConfig.FORMAT.PASSWORD.test(userID)) {
+    if (!AppConfig.FORMAT.PASSWORD.test(password)) {
       return {
         success: false,
         message: ResponseMessage.REGISTER.ERROR.PASSWORD_RULE_NOT_MATCH,
