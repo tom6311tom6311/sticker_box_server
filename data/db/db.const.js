@@ -351,7 +351,7 @@ const stickers = {
     ownerID: 'qa4510qa',
     tagIDs: [''],
     description: '怪表情白爛',
-    type: 'jpg',
+    type: 'png',
   },
   'fce06f84-aafc-4928-8300-78c146164576': {
     stickerID: 'fce06f84-aafc-4928-8300-78c146164576',
