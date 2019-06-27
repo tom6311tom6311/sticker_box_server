@@ -1,15 +1,25 @@
 type Query {
   imgSearch(searchTerm: String): [Sticker!]!
-  ownStickers(ownerID: ID!): [Sticker]!
+  tagSearch(searchKey: String): [TagSearchResponseItem!]!
+  ownStickers(ownerID: ID!): [Sticker!]!
+  ownTags(ownerID: ID!): [Tag!]!
 }
 
 type Mutation {
   login(arg: LoginInput!): LoginResponse!
-  register(arg: RegisterInput!): RegisterResponse!
+  register(arg: RegisterInput!): GeneralResponse!
+  createTag(arg: CreateTagInput!): GeneralResponse!
+  subscribeTag(arg: SubscribeTagInput!): GeneralResponse!
+  cancelSubscribeTag(arg: CancelSubscribeTagInput!): GeneralResponse!
+  kickSubscribeTag(arg: KickSubscribeTagInput!): GeneralResponse!
+  deleteTag(arg: DeleteTagInput!): GeneralResponse!
+  uploadSticker(arg: UploadStickerInput!): GeneralResponse!
+  updateSticker(arg: UpdateStickerInput!): GeneralResponse!
+  deleteSticker(arg: DeleteStickerInput!): GeneralResponse!
 }
 
 type Subscription {
-  login(arg: LoginInput!): LoginResponse!
+  login(arg: LoginInput!): GeneralResponse!
 }
 
 type User {
@@ -35,6 +45,21 @@ type Sticker {
   type: String!
 }
 
+type UserInfo {
+  userID: ID!
+  name: String!
+}
+
+type GeneralResponse {
+  success: Boolean!
+  message: String!
+}
+
+type TagSearchResponseItem {
+  tagID: ID!
+  owner: UserInfo!
+}
+
 input LoginInput {
   userID: ID!
   password: String!
@@ -55,7 +80,56 @@ input RegisterInput {
   name: String!
 }
 
-type RegisterResponse {
-  success: Boolean!
-  message: String!
+input CreateTagInput {
+  userID: ID!
+  sessionID: ID!
+  tagID: ID!
+  key: String!
+}
+
+input SubscribeTagInput {
+  userID: ID!
+  sessionID: ID!
+  tagID: ID!
+}
+
+input CancelSubscribeTagInput {
+  userID: ID!
+  sessionID: ID!
+  tagID: ID!
+}
+
+input KickSubscribeTagInput {
+  userID: ID!
+  sessionID: ID!
+  tagID: ID!
+  kickUserID: ID!
+}
+
+input DeleteTagInput {
+  userID: ID!
+  sessionID: ID!
+  tagID: ID!
+}
+
+input UploadStickerInput {
+  userID: ID!
+  sessionID: ID!
+  stickerID: ID!
+  description: String!
+  type: String!
+}
+
+input UpdateStickerInput {
+  userID: ID!
+  sessionID: ID!
+  stickerID: ID!
+  description: String
+  tagIDs: [ID!]
+}
+
+input DeleteStickerInput {
+  userID: ID!
+  sessionID: ID!
+  stickerID: ID!
 }
