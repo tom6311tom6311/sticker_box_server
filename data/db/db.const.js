@@ -4,7 +4,7 @@ const users = {
     userID: 'system',
     password: 'system',
     name: 'admin',
-    ownTagIDs: ['公開', '壓力', '開心', '傷心', '加油', '再見', '崩潰', '神奇', '好朋友', '可愛', '孤單', '狗', '貓', '厲害', '感謝', '勝利', '無辜', '生氣', '驚嚇', '瘋狂', '運動', '飢餓', '吃'],
+    ownTagIDs: ['1bb7a82a-e0c9-419b-bda9-2521f7ee5ff5', 'e6673cde-0045-4521-9002-1bc96e2390c9', 'dd61befd-15f9-414b-aa1d-c6c110d10fa0dd61befd-15f9-414b-aa1d-c6c110d10fa0', '0dc552e1-b819-44d5-a07f-a7ea245ee399', '706c5e41-3082-4269-bae3-ced3b24d1226'],
     ownStickerIDs: [
       '06bfbeaa-f7ae-41f1-8961-eb210fec85db',
       '0799395a-ddc9-440b-aca0-27668e090442',
@@ -43,7 +43,7 @@ const users = {
     userID: 'test01',
     password: 'test01',
     name: 'user1',
-    ownTagIDs: ['312神手團', '903', 'FULLYBnB', '白蘭氏'],
+    ownTagIDs: ['ce6a6ca1-92dc-41ad-b497-8cea3382a184', 'db332809-2579-406a-b3bf-f78bcdf87960', '9774f353-346b-4b91-98f6-a642eb4cbfb2', '981aabfa-9a32-445b-bad1-a2246cb562e2'],
     ownStickerIDs: [
       '481406f1-4706-419d-8b5c-4f2e72a3cc53',
       '4b8ab5d2-077a-481f-b449-8a60d687d7dc',
@@ -97,13 +97,13 @@ const users = {
       'ca76f067-d928-4c34-8476-08f2799d67b6',
       'cb0a2394-aeea-4a31-9c0d-b29d27259ca7',
     ],
-    subscribedTagIDs: ['公開', '學校', '開心', '傷心', 'Cars', 'ToyStory'],
+    subscribedTagIDs: ['公開', '開心', '7c7ccabb-faa5-43ae-a40b-de2c9b6edc67'],
   },
   'test02': {
     userID: 'test02',
     password: 'test02',
     name: 'user2',
-    ownTagIDs: ['WL57_314', 'NTUBSEb04', 'blablabla'],
+    ownTagIDs: ['7c7ccabb-faa5-43ae-a40b-de2c9b6edc67', 'd0b16d1c-a7d5-42c5-9c5b-479d23c3e217', '91cfbea9-52c9-4b6c-96eb-ea0020c7b7d5', 'ca29785a-cf2a-451a-866e-f3143ab631c6'],
     ownStickerIDs: [
       'cbed61fa-529a-4482-a56b-d63b3d24f41e',
       'cd07df5d-307b-449e-bfab-04fd2ce738f4',
@@ -131,14 +131,14 @@ const users = {
       'fb0e4981-c9b1-4c6b-9a57-bc58cf56f00a',
       'fce06f84-aafc-4928-8300-78c146164576',
     ],
-    subscribedTagIDs: ['公開', '開心', '傷心', 'FULLYBnB', '白蘭氏', 'ToyStory', 'findingNemo', 'theIncredibles'],
+    subscribedTagIDs: ['公開', '開心', '7c7ccabb-faa5-43ae-a40b-de2c9b6edc67', 'FULLYBnB', '白蘭氏', 'ToyStory', 'findingNemo', 'theIncredibles'],
   },
   'disney@12345': {
     userID: 'disney@12345',
     password: 'DisneYIsTheBEST',
     name: 'Disney',
     ownTagIDs: ['Cars', 'ToyStory', 'aBugLife', 'findingNemo', 'theIncredibles'],
-    subscribedTagIDs: ['公開', '開心', '傷心'],
+    subscribedTagIDs: ['公開', '開心', '7c7ccabb-faa5-43ae-a40b-de2c9b6edc67'],
   },
 };
 
@@ -146,42 +146,42 @@ const stickers = {
   'cbed61fa-529a-4482-a56b-d63b3d24f41e': {
     stickerID: 'cbed61fa-529a-4482-a56b-d63b3d24f41e',
     ownerID: 'test02',
-    tagIDs: ['Cars', '努力'],
+    tagIDs: ['29fd6d56-f423-4f10-a89e-49b1309678de'],
     description: '閃電麥坤舌頭勝利',
     type: 'jpg',
   },
   '38091934-77ba-4723-9197-28feafa43f7d': {
     stickerID: '38091934-77ba-4723-9197-28feafa43f7d',
     ownerID: 'system',
-    tagIDs: ['壓力', '崩潰'],
+    tagIDs: ['ce6a6ca1-92dc-41ad-b497-8cea3382a184', 'dd61befd-15f9-414b-aa1d-c6c110d10fa0dd61befd-15f9-414b-aa1d-c6c110d10fa0'],
     description: '不想聽壓力大',
     type: 'jpg',
   },
   '6fadc787-7a83-4c29-8f13-1f2491016be8': {
     stickerID: '6fadc787-7a83-4c29-8f13-1f2491016be8',
     ownerID: 'test01',
-    tagIDs: ['傷心', '神奇'],
+    tagIDs: ['7c7ccabb-faa5-43ae-a40b-de2c9b6edc67', '0dc552e1-b819-44d5-a07f-a7ea245ee399'],
     description: '不敢相信難過悲傷神奇',
     type: 'jpg',
   },
   'd6331fc1-06ea-4890-be28-e4a3535cf79a': {
     stickerID: 'd6331fc1-06ea-4890-be28-e4a3535cf79a',
     ownerID: 'test02',
-    tagIDs: ['加油', '再見'],
+    tagIDs: ['1bb7a82a-e0c9-419b-bda9-2521f7ee5ff5', 'e6673cde-0045-4521-9002-1bc96e2390c9'],
     description: '你好加油再見',
     type: 'png',
   },
   '56eff765-d537-4faf-9ca2-aed7023a00d6': {
     stickerID: '56eff765-d537-4faf-9ca2-aed7023a00d6',
     ownerID: 'test01',
-    tagIDs: ['加油', '好朋友'],
+    tagIDs: ['1bb7a82a-e0c9-419b-bda9-2521f7ee5ff5', '706c5e41-3082-4269-bae3-ced3b24d1226'],
     description: '兄弟好朋友加油努力',
     type: 'jpg',
   },
   '5289d5de-a9b4-41d7-90fc-188c897715e2': {
     stickerID: '5289d5de-a9b4-41d7-90fc-188c897715e2',
     ownerID: 'test01',
-    tagIDs: ['再見'],
+    tagIDs: ['e6673cde-0045-4521-9002-1bc96e2390c9'],
     description: '再見掰晚安',
     type: 'png',
   },
@@ -888,53 +888,101 @@ const stickers = {
 };
 
 const tags = {
-  '努力': {
-    tagID: '努力',
+  '29fd6d56-f423-4f10-a89e-49b1309678de': {
+    tagID: '29fd6d56-f423-4f10-a89e-49b1309678de',
     ownerID: 'system',
     stickerIDs: ['cars0001'],
-    key: 'l;a;fjnegklde;fio',
+    key: '努力',
   },
-  '壓力': {
-    tagID: '壓力',
+  'ce6a6ca1-92dc-41ad-b497-8cea3382a184': {
+    tagID: 'ce6a6ca1-92dc-41ad-b497-8cea3382a184',
+    ownerID: 'test01',
+    stickerIDs: ['system0001'],
+    key: '壓力',
+  },
+  'dd61befd-15f9-414b-aa1d-c6c110d10fa0': {
+    tagID: 'dd61befd-15f9-414b-aa1d-c6c110d10fa0',
     ownerID: 'system',
     stickerIDs: ['system0001'],
-    key: 'eafgaerojgkjdsnv;a',
+    key: '崩潰',
   },
-  '崩潰': {
-    tagID: '崩潰',
-    ownerID: 'system',
-    stickerIDs: ['system0001'],
-    key: 'ows;idhfakerfg;iaeg',
-  },
-  '神奇': {
-    tagID: '神奇',
+  '0dc552e1-b819-44d5-a07f-a7ea245ee399': {
+    tagID: '0dc552e1-b819-44d5-a07f-a7ea245ee399',
     ownerID: 'system',
     stickerIDs: ['system0002'],
-    key: ';lkmeragdojaebmkae;',
+    key: '神奇',
   },
-  '傷心': {
-    tagID: '傷心',
-    ownerID: 'system',
+  '7c7ccabb-faa5-43ae-a40b-de2c9b6edc67': {
+    tagID: '7c7ccabb-faa5-43ae-a40b-de2c9b6edc67',
+    ownerID: 'test02',
     stickerIDs: ['system0002'],
-    key: 'diluvsadjkvae/v;n',
+    key: '傷心',
   },
-  '加油': {
-    tagID: '加油',
+  '1bb7a82a-e0c9-419b-bda9-2521f7ee5ff5': {
+    tagID: '1bb7a82a-e0c9-419b-bda9-2521f7ee5ff5',
     ownerID: 'system',
     stickerIDs: ['system0003', 'system0004'],
-    key: ';oiqreiuweq;klfmq',
+    key: '加油',
   },
-  '再見': {
-    tagID: '再見',
+  'e6673cde-0045-4521-9002-1bc96e2390c9': {
+    tagID: 'e6673cde-0045-4521-9002-1bc96e2390c9',
     ownerID: 'system',
     stickerIDs: ['system0003', 'system0005'],
-    key: 'l;knzdjvsafmvakls/mf;ilwa',
+    key: '再見',
   },
-  '好朋友': {
-    tagID: '好朋友',
+  '706c5e41-3082-4269-bae3-ced3b24d1226': {
+    tagID: '706c5e41-3082-4269-bae3-ced3b24d1226',
     ownerID: 'system',
     stickerIDs: ['system0004'],
-    key: 'lnj.S<MCVlaeurghoiwefow;np',
+    key: '好朋友',
+  },
+  'a8e010e6-d496-4eed-9785-0b903a1eb729': {
+    tagID: 'a8e010e6-d496-4eed-9785-0b903a1eb729',
+    ownerID: 'system',
+    stickerIDs: [],
+    key: '公開',
+  },
+  'bbb67fdf-a25f-4728-8849-198272b6fbd5': {
+    tagID: 'bbb67fdf-a25f-4728-8849-198272b6fbd5',
+    ownerID: 'system',
+    stickerIDs: [],
+    key: '開心',
+  },
+  'db332809-2579-406a-b3bf-f78bcdf87960': {
+    tagID: 'db332809-2579-406a-b3bf-f78bcdf87960',
+    ownerID: 'test01',
+    stickerIDs: [],
+    key: '312神手團',
+  },
+  '9774f353-346b-4b91-98f6-a642eb4cbfb2': {
+    tagID: '9774f353-346b-4b91-98f6-a642eb4cbfb2',
+    ownerID: 'test01',
+    stickerIDs: [],
+    key: '白蘭氏',
+  },
+  '981aabfa-9a32-445b-bad1-a2246cb562e2': {
+    tagID: '981aabfa-9a32-445b-bad1-a2246cb562e2',
+    ownerID: 'test01',
+    stickerIDs: [],
+    key: 'FULLYBnB',
+  },
+  'd0b16d1c-a7d5-42c5-9c5b-479d23c3e217': {
+    tagID: 'd0b16d1c-a7d5-42c5-9c5b-479d23c3e217',
+    ownerID: 'test02',
+    stickerIDs: [],
+    key: 'WL57_314',
+  },
+  '91cfbea9-52c9-4b6c-96eb-ea0020c7b7d5': {
+    tagID: '91cfbea9-52c9-4b6c-96eb-ea0020c7b7d5',
+    ownerID: 'test02',
+    stickerIDs: [],
+    key: 'NTUBSEb04',
+  },
+  'ca29785a-cf2a-451a-866e-f3143ab631c6': {
+    tagID: 'ca29785a-cf2a-451a-866e-f3143ab631c6',
+    ownerID: 'test02',
+    stickerIDs: [],
+    key: 'blablabla',
   },
 };
 
