@@ -6,7 +6,6 @@ import { GraphQLServer, PubSub } from 'graphql-yoga';
 import AppConfig from './const/AppConfig.const';
 import imgListRouter from './routes/ImgList.route';
 import TermMatcher from './util/TermMatcher.class';
-import db from './data/db/db.const';
 import Query from './src/resolvers/Query';
 import Mutation from './src/resolvers/Mutation';
 // import Subscription from './resolvers/Subscription'
@@ -30,7 +29,6 @@ const server = new GraphQLServer({
     Mutation,
   },
   context: {
-    db,
     pubsub,
   },
 });

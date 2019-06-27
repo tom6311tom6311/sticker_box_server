@@ -89,6 +89,10 @@ class UserStore {
       message: ResponseMessage.REGISTER.INFO.SUCCESS,
     };
   }
+
+  getOwnStickerIDs(ownerID) {
+    return this.users[ownerID].ownStickerIDs || [];
+  }
 }
 
 export default new UserStore();
