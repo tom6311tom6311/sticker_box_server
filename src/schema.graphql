@@ -1,5 +1,6 @@
 type Query {
   imgSearch(searchTerm: String): [Sticker!]!
+  ownStickers(ownerID: ID!): [Sticker]!
 }
 
 type Mutation {
