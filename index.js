@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import { GraphQLServer, PubSub } from 'graphql-yoga';
 import AppConfig from './const/AppConfig.const';
+import db from './data/db/db.const';
 import imgListRouter from './routes/ImgList.route';
 import TermMatcher from './util/TermMatcher.class';
 import Query from './src/resolvers/Query';
