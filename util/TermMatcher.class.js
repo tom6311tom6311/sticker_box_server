@@ -17,7 +17,7 @@ const similarity = (vecList1, vecList2) => {
 class TermMatcher {
   constructor() {
     this.wordLib = {};
-    this.termLib = [];
+    this.termLibs = {};
   }
 
   loadWordLib(callback = () => {}) {
@@ -27,17 +27,21 @@ class TermMatcher {
     });
   }
 
-  termExists(id) {
-    return this.termLib.findIndex(({ id: i }) => i === id) !== -1;
+  termExists(termLib, id) {
+    if (this.termLibs[termLib] === undefined) return false;
+    return this.termLibs[termLib].findIndex(({ id: i }) => i === id) !== -1;
   }
 
-  updateTerms(terms) {
+  updateTerms(termLib, terms) {
     terms.forEach(({ id, term }) => {
-      if (this.termExists(id)) {
+      if (this.termExists(termLib, id)) {
         console.log(`INFO [TermMatcher]: term already exits: ${id}`);
         return;
       }
-      this.termLib.push({
+      if (this.termLibs[termLib] === undefined) {
+        this.termLibs[termLib] = [];
+      }
+      this.termLibs[termLib].push({
         id,
         term,
         vecList: nodejieba.cut(term)
@@ -45,20 +49,20 @@ class TermMatcher {
           .filter(v => v !== undefined),
       });
     });
-    // console.log(this.termLib);
   }
 
-  match(term, num) {
+  match(termLib, term, num) {
+    if (this.termLibs[termLib] === undefined) return [];
     const vecList = nodejieba.cut(term)
       .map(w => this.wordLib[w])
       .filter(v => v !== undefined);
     if (term === '' || vecList.length === 0) {
       return randomChoice(
-        this.termLib.map(({ id }) => id),
+        this.termLibs[termLib].map(({ id }) => id),
         num,
       );
     }
-    return this.termLib
+    return this.termLibs[termLib]
       .sort((a, b) => similarity(vecList, b.vecList) - similarity(vecList, a.vecList))
       .map(({ id }) => id)
       .slice(0, num);

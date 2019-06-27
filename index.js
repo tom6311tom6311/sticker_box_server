@@ -12,12 +12,17 @@ import Mutation from './src/resolvers/Mutation';
 // import Subscription from './resolvers/Subscription'
 
 // initialize term-matcher
-const terms = Object
+const stickerTerms = Object
   .values(db.stickers)
   .map(({ stickerID, description }) => ({ id: stickerID, term: description }));
 
+const tagTerms = Object
+  .values(db.tags)
+  .map(({ tagID, key }) => ({ id: tagID, term: key }));
+
 TermMatcher.loadWordLib(() => {
-  TermMatcher.updateTerms(terms);
+  TermMatcher.updateTerms(AppConfig.TERM_LIB.STICKER, stickerTerms);
+  TermMatcher.updateTerms(AppConfig.TERM_LIB.TAG, tagTerms);
   console.log('TermMatcher initialized.');
 });
 

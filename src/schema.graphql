@@ -26,14 +26,16 @@ type User {
   userID: ID!
   password: String!
   name: String!
-  owntagIDs: [ID!]!
-  subscribedtagIDs: [ID!]!
+  ownStickerIDs: [ID!]!
+  ownTagIDs: [ID!]!
+  subscribedTagIDs: [ID!]!
 }
 
 type Tag {
   tagID: ID!
   ownerID: ID!
   stickerIDs: [ID!]!
+  subscriberIDs: [ID!]!
   key: String!
 }
 
@@ -69,8 +71,8 @@ type LoginResponse {
   success: Boolean!
   message: String!
   name: String
-  owntagIDs: [ID!]
-  subscribedtagIDs: [ID!]
+  ownTagIDs: [ID!]
+  subscribedTagIDs: [ID!]
   sessionID: ID
 }
 

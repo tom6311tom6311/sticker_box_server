@@ -1,7 +1,5 @@
 import uuid from 'uuid/v4';
 import db from '../../../data/db/db.const';
-import ResponseMessage from '../../../const/ResponseMessage.const';
-import AppConfig from '../../../const/AppConfig.const';
 
 class UserStore {
   constructor() {
@@ -9,89 +7,54 @@ class UserStore {
     this.userSessionIDs = {};
   }
 
-  login({ userID, password }) {
-    if (!userID) {
-      return {
-        success: false,
-        message: ResponseMessage.LOGIN.ERROR.USER_ID_EMPTY,
-      };
-    }
-
-    if (!password) {
-      return {
-        success: false,
-        message: ResponseMessage.LOGIN.ERROR.PASSWORD_EMPTY,
-      };
-    }
-
-    const user = this.users[userID];
-    if (user === undefined) {
-      return {
-        success: false,
-        message: ResponseMessage.LOGIN.ERROR.USER_NOT_EXISTS,
-      };
-    }
-
-    if (user.password !== password) {
-      return {
-        success: false,
-        message: ResponseMessage.LOGIN.ERROR.PASSWORD_WRONG,
-      };
-    }
-
-    const { name, owntagIDs, subscribedtagIDs } = user;
-    const sessionID = uuid();
-    this.userSessionIDs[userID] = sessionID;
-
-    return {
-      success: true,
-      message: ResponseMessage.LOGIN.INFO.SUCCESS,
-      name,
-      owntagIDs,
-      subscribedtagIDs,
-      sessionID,
-    };
+  getUser(userID) {
+    return this.users[userID] || null;
   }
 
-  register({ userID, password, name }) {
-    const user = this.users[userID];
-    if (user !== undefined) {
-      return {
-        success: false,
-        message: ResponseMessage.REGISTER.ERROR.USER_ID_EXISTED,
-      };
-    }
+  getUserInfo(userID) {
+    const { name } = this.users[userID] || {};
+    return name !== undefined
+      ? {
+        userID,
+        name,
+      }
+      : null;
+  }
 
-    if (!AppConfig.FORMAT.USER_ID.test(userID)) {
-      return {
-        success: false,
-        message: ResponseMessage.REGISTER.ERROR.USER_ID_RULE_NOT_MATCH,
-      };
-    }
-
-    if (!AppConfig.FORMAT.PASSWORD.test(password)) {
-      return {
-        success: false,
-        message: ResponseMessage.REGISTER.ERROR.PASSWORD_RULE_NOT_MATCH,
-      };
-    }
-
+  addUser({ userID, password, name }) {
     this.users[userID] = {
       userID,
       password,
       name,
-      owntagIDs: [],
-      subscribedtagIDs: [],
+      ownTagIDs: [],
+      subscribedTagIDs: [],
     };
+  }
 
-    return {
-      success: true,
-      message: ResponseMessage.REGISTER.INFO.SUCCESS,
+  updateUser({ userID, ownTagIDs, subscribedTagIDs }) {
+    this.users[userID] = {
+      ...this.users[userID],
+      ownTagIDs: ownTagIDs || this.users[userID].ownTagIDs,
+      subscribedTagIDs: subscribedTagIDs || this.users[userID].subscribedTagIDs,
     };
+  }
+
+  giveSession(userID) {
+    const sessionID = uuid();
+    this.userSessionIDs[userID] = sessionID;
+    return sessionID;
+  }
+
+  getSessionID(userID) {
+    return this.userSessionIDs[userID] || null;
   }
 
   getOwnStickerIDs(ownerID) {
     return this.users[ownerID].ownStickerIDs || [];
+  }
+
+  getOwnTagIDs(ownerID) {
+    return this.users[ownerID].ownTagIDs || [];
   }
 }
 

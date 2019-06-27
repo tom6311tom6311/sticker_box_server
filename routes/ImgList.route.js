@@ -5,21 +5,12 @@ import TermMatcher from '../util/TermMatcher.class';
 
 const imgListRouter = express.Router();
 
-imgListRouter.get('/', (req, res) => {
-  const { searchTerm } = req.query;
-  const imgList = TermMatcher.match(searchTerm || '', AppConfig.DEFAULT_IMG_LIST_SIZE);
-
-  res.json({
-    imgList,
-  });
-});
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, AppConfig.IMG_DIR);
   },
   filename: (req, file, cb) => {
-    TermMatcher.updateTerms([file.originalname]);
+    TermMatcher.updateTerms(AppConfig.TERM_LIB.STICKER, [file.originalname]);
     cb(null, file.originalname);
   },
 });
