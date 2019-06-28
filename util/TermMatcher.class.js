@@ -51,6 +51,14 @@ class TermMatcher {
     });
   }
 
+  deleteTerm(termLib, id) {
+    if (this.termLibs[termLib] === undefined) return;
+    const idx = this.termLibs[termLib].findIndex(({ id: i }) => i === id);
+    if (idx !== -1) {
+      this.termLibs[termLib].splice(idx, 1);
+    }
+  }
+
   match(termLib, term, num) {
     if (this.termLibs[termLib] === undefined) return [];
     const vecList = nodejieba.cut(term)

@@ -7,7 +7,7 @@ type Query {
 
 type Mutation {
   login(arg: LoginInput!): LoginResponse!
-  register(arg: RegisterInput!): GeneralResponse!
+  register(arg: RegisterInput!): LoginResponse!
   createTag(arg: CreateTagInput!): GeneralResponse!
   subscribeTag(arg: SubscribeTagInput!): GeneralResponse!
   cancelSubscribeTag(arg: CancelSubscribeTagInput!): GeneralResponse!

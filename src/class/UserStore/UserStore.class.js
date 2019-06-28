@@ -31,9 +31,15 @@ class UserStore {
     };
   }
 
-  updateUser({ userID, ownTagIDs, subscribedTagIDs }) {
+  updateUser({
+    userID,
+    ownStickerIDs,
+    ownTagIDs,
+    subscribedTagIDs,
+  }) {
     this.users[userID] = {
       ...this.users[userID],
+      ownStickerIDs: ownStickerIDs || this.users[userID].ownStickerIDs,
       ownTagIDs: ownTagIDs || this.users[userID].ownTagIDs,
       subscribedTagIDs: subscribedTagIDs || this.users[userID].subscribedTagIDs,
     };
