@@ -44,6 +44,7 @@ const Mutation = {
     return {
       success: true,
       message: ResponseMessage.LOGIN.INFO.SUCCESS,
+      userID,
       name,
       ownTagIDs,
       subscribedTagIDs,
@@ -81,6 +82,7 @@ const Mutation = {
     return {
       success: true,
       message: ResponseMessage.REGISTER.INFO.SUCCESS,
+      userID,
       name,
       ownTagIDs,
       subscribedTagIDs,
@@ -348,6 +350,7 @@ const Mutation = {
       };
     }
     if (!AppConfig.FORMAT.CHINESE_ONLY.test(description)) {
+      fs.unlinkSync(imgPath);
       return {
         success: false,
         message: ResponseMessage.UPLOAD_STICKER.ERROR.DESC_SHOULD_BE_CHINESE,

@@ -70,6 +70,7 @@ input LoginInput {
 type LoginResponse {
   success: Boolean!
   message: String!
+  userID: ID
   name: String
   ownTagIDs: [ID!]
   subscribedTagIDs: [ID!]
