@@ -4,6 +4,45 @@ import UserStore from '../class/UserStore/UserStore.class';
 import StickerStore from '../class/StickerStore/StickerStore.class';
 import TagStore from '../class/TagStore/TagStore.class';
 
+const authenticate = ({ userID, sessionID }) => {
+  if (!userID) {
+    return {
+      success: false,
+      message: ResponseMessage.AUTH.ERROR.USER_ID_EMPTY,
+    };
+  }
+  if (!sessionID) {
+    return {
+      success: false,
+      message: ResponseMessage.AUTH.ERROR.SESSION_ID_EMPTY,
+    };
+  }
+  const user = UserStore.getUser(userID);
+  if (user === null) {
+    return {
+      success: false,
+      message: ResponseMessage.AUTH.ERROR.USER_NOT_EXIST,
+    };
+  }
+  const validateSessionID = UserStore.getSessionID(userID);
+  if (validateSessionID === null) {
+    return {
+      success: false,
+      message: ResponseMessage.AUTH.ERROR.SESSION_NOT_EXIST,
+    };
+  }
+  if (sessionID !== validateSessionID) {
+    return {
+      success: false,
+      message: ResponseMessage.AUTH.ERROR.SESSION_VERIFICATION_FAILED,
+    };
+  }
+  return {
+    success: true,
+    message: ResponseMessage.AUTH.INFO.SUCCESS,
+  };
+};
+
 
 const Mutation = {
   login(parent, { arg: { userID, password } }) {
@@ -89,18 +128,8 @@ const Mutation = {
       },
     },
   ) {
-    if (!userID) {
-      return {
-        success: false,
-        message: ResponseMessage.CREATE_TAG.ERROR.USER_ID_EMPTY,
-      };
-    }
-    if (!sessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.CREATE_TAG.ERROR.SESSION_ID_EMPTY,
-      };
-    }
+    const authResponse = authenticate({ userID, sessionID });
+    if (authResponse.success !== true) return authResponse;
     if (!tagID) {
       return {
         success: false,
@@ -111,26 +140,6 @@ const Mutation = {
       return {
         success: false,
         message: ResponseMessage.CREATE_TAG.ERROR.KEY_EMPTY,
-      };
-    }
-    const user = UserStore.getUser(userID);
-    if (user === null) {
-      return {
-        success: false,
-        message: ResponseMessage.CREATE_TAG.ERROR.USER_NOT_EXIST,
-      };
-    }
-    const validateSessionID = UserStore.getSessionID(userID);
-    if (validateSessionID === null) {
-      return {
-        success: false,
-        message: ResponseMessage.CREATE_TAG.ERROR.SESSION_NOT_EXIST,
-      };
-    }
-    if (sessionID !== validateSessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.CREATE_TAG.ERROR.SESSION_VERIFICATION_FAILED,
       };
     }
     if (!AppConfig.FORMAT.UUID.test(tagID)) {
@@ -145,6 +154,7 @@ const Mutation = {
         message: ResponseMessage.CREATE_TAG.ERROR.KEY_SHOULD_BE_CHINESE,
       };
     }
+    const user = UserStore.getUser(userID);
     UserStore.updateUser({
       userID,
       ownTagIDs: [...user.ownTagIDs, tagID],
@@ -160,42 +170,12 @@ const Mutation = {
     };
   },
   subscribeTag(parent, { arg: { userID, sessionID, tagID } }) {
-    if (!userID) {
-      return {
-        success: false,
-        message: ResponseMessage.SUBSCRIBE_TAG.ERROR.USER_ID_EMPTY,
-      };
-    }
-    if (!sessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.SUBSCRIBE_TAG.ERROR.SESSION_ID_EMPTY,
-      };
-    }
+    const authResponse = authenticate({ userID, sessionID });
+    if (authResponse.success !== true) return authResponse;
     if (!tagID) {
       return {
         success: false,
         message: ResponseMessage.SUBSCRIBE_TAG.ERROR.TAG_ID_EMPTY,
-      };
-    }
-    const user = UserStore.getUser(userID);
-    if (user === null) {
-      return {
-        success: false,
-        message: ResponseMessage.SUBSCRIBE_TAG.ERROR.USER_NOT_EXIST,
-      };
-    }
-    const validateSessionID = UserStore.getSessionID(userID);
-    if (validateSessionID === null) {
-      return {
-        success: false,
-        message: ResponseMessage.SUBSCRIBE_TAG.ERROR.SESSION_NOT_EXIST,
-      };
-    }
-    if (sessionID !== validateSessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.SUBSCRIBE_TAG.ERROR.SESSION_VERIFICATION_FAILED,
       };
     }
     const tag = TagStore.getTag(tagID);
@@ -205,6 +185,7 @@ const Mutation = {
         message: ResponseMessage.SUBSCRIBE_TAG.ERROR.TAG_NOT_EXIST,
       };
     }
+    const user = UserStore.getUser(userID);
     UserStore.updateUser({
       userID,
       subscribedTagIDs: [...user.subscribedTagIDs, tagID],
@@ -219,42 +200,12 @@ const Mutation = {
     };
   },
   cancelSubscribeTag(parent, { arg: { userID, sessionID, tagID } }) {
-    if (!userID) {
-      return {
-        success: false,
-        message: ResponseMessage.CANCEL_SUBSCRIBE_TAG.ERROR.USER_ID_EMPTY,
-      };
-    }
-    if (!sessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.CANCEL_SUBSCRIBE_TAG.ERROR.SESSION_ID_EMPTY,
-      };
-    }
+    const authResponse = authenticate({ userID, sessionID });
+    if (authResponse.success !== true) return authResponse;
     if (!tagID) {
       return {
         success: false,
         message: ResponseMessage.CANCEL_SUBSCRIBE_TAG.ERROR.TAG_ID_EMPTY,
-      };
-    }
-    const user = UserStore.getUser(userID);
-    if (user === null) {
-      return {
-        success: false,
-        message: ResponseMessage.CANCEL_SUBSCRIBE_TAG.ERROR.USER_NOT_EXIST,
-      };
-    }
-    const validateSessionID = UserStore.getSessionID(userID);
-    if (validateSessionID === null) {
-      return {
-        success: false,
-        message: ResponseMessage.CANCEL_SUBSCRIBE_TAG.ERROR.SESSION_NOT_EXIST,
-      };
-    }
-    if (sessionID !== validateSessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.CANCEL_SUBSCRIBE_TAG.ERROR.SESSION_VERIFICATION_FAILED,
       };
     }
     const tag = TagStore.getTag(tagID);
@@ -264,6 +215,7 @@ const Mutation = {
         message: ResponseMessage.CANCEL_SUBSCRIBE_TAG.ERROR.TAG_NOT_EXIST,
       };
     }
+    const user = UserStore.getUser(userID);
     UserStore.updateUser({
       userID,
       subscribedTagIDs: user.subscribedTagIDs.filter(tid => tid !== tagID),
@@ -288,18 +240,8 @@ const Mutation = {
       },
     },
   ) {
-    if (!userID) {
-      return {
-        success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.USER_ID_EMPTY,
-      };
-    }
-    if (!sessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.SESSION_ID_EMPTY,
-      };
-    }
+    const authResponse = authenticate({ userID, sessionID });
+    if (authResponse.success !== true) return authResponse;
     if (!tagID) {
       return {
         success: false,
@@ -310,26 +252,6 @@ const Mutation = {
       return {
         success: false,
         message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.KICK_USER_ID_EMPTY,
-      };
-    }
-    const user = UserStore.getUser(userID);
-    if (user === null) {
-      return {
-        success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.USER_NOT_EXIST,
-      };
-    }
-    const validateSessionID = UserStore.getSessionID(userID);
-    if (validateSessionID === null) {
-      return {
-        success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.SESSION_NOT_EXIST,
-      };
-    }
-    if (sessionID !== validateSessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.SESSION_VERIFICATION_FAILED,
       };
     }
     const tag = TagStore.getTag(tagID);
@@ -352,6 +274,7 @@ const Mutation = {
         message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.KICK_USER_NOT_EXIST,
       };
     }
+    const user = UserStore.getUser(userID);
     UserStore.updateUser({
       kickUserID,
       subscribedTagIDs: user.subscribedTagIDs.filter(tid => tid !== tagID),
@@ -366,42 +289,12 @@ const Mutation = {
     };
   },
   deleteTag(parent, { arg: { userID, sessionID, tagID } }) {
-    if (!userID) {
-      return {
-        success: false,
-        message: ResponseMessage.DELETE_TAG.ERROR.USER_ID_EMPTY,
-      };
-    }
-    if (!sessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.DELETE_TAG.ERROR.SESSION_ID_EMPTY,
-      };
-    }
+    const authResponse = authenticate({ userID, sessionID });
+    if (authResponse.success !== true) return authResponse;
     if (!tagID) {
       return {
         success: false,
         message: ResponseMessage.DELETE_TAG.ERROR.TAG_ID_EMPTY,
-      };
-    }
-    const user = UserStore.getUser(userID);
-    if (user === null) {
-      return {
-        success: false,
-        message: ResponseMessage.DELETE_TAG.ERROR.USER_NOT_EXIST,
-      };
-    }
-    const validateSessionID = UserStore.getSessionID(userID);
-    if (validateSessionID === null) {
-      return {
-        success: false,
-        message: ResponseMessage.DELETE_TAG.ERROR.SESSION_NOT_EXIST,
-      };
-    }
-    if (sessionID !== validateSessionID) {
-      return {
-        success: false,
-        message: ResponseMessage.DELETE_TAG.ERROR.SESSION_VERIFICATION_FAILED,
       };
     }
     const tag = TagStore.getTag(tagID);
@@ -417,6 +310,7 @@ const Mutation = {
         message: ResponseMessage.DELETE_TAG.ERROR.TAG_NOT_YOUR_OWN,
       };
     }
+    const user = UserStore.getUser(userID);
     tag.subscriberIDs.forEach((subscriberID) => {
       UserStore.updateUser({
         subscriberID,
@@ -429,8 +323,18 @@ const Mutation = {
       message: ResponseMessage.DELETE_TAG.INFO.SUCCESS,
     };
   },
-  // TODO
-  // uploadSticker(parent, { arg }) {
+  // uploadSticker(
+  //   parent,
+  //   {
+  //     arg: {
+  //       userID,
+  //       sessionID,
+  //       stickerID,
+  //       description,
+  //       type,
+  //     },
+  //   },
+  // ) {
   // },
   // updateSticker(parent, { arg }) {
   // },
