@@ -6,7 +6,18 @@ class TagStore {
   }
 
   getTag(tagID) {
-    return this.tags[tagID] || {};
+    return this.tags[tagID] || null;
+  }
+
+  getTagInfo(tagID) {
+    const { ownerID, key } = this.tags[tagID] || {};
+    return ownerID !== undefined
+      ? {
+        tagID,
+        ownerID,
+        key,
+      }
+      : null;
   }
 
   addTag({ tagID, ownerID, key }) {

@@ -11,18 +11,31 @@ const Query = {
     console.log(stickerIDs);
     return stickerIDs.map(stickerID => StickerStore.getSticker(stickerID));
   },
-  tagSearch: (parent, { searchKey }) => {
-    const tagIDs = TermMatcher.match(AppConfig.TERM_LIB.TAG, searchKey || '', AppConfig.DEFAULT_TAG_SEARCH_RESP_SIZE);
+  tagSearch: (parent, { searchKey, num }) => {
+    const tagIDs = TermMatcher.match(AppConfig.TERM_LIB.TAG, searchKey || '', num || AppConfig.DEFAULT_TAG_SEARCH_RESP_SIZE);
     return tagIDs
       .map(tagID => TagStore.getTag(tagID))
-      .map(({ tagID, ownerID }) => ({
+      .map(({ tagID, key, ownerID }) => ({
         tagID,
+        key,
         owner: UserStore.getUserInfo(ownerID),
       }));
   },
   ownStickers: (parent, { ownerID }) => {
     const stickerIDs = UserStore.getOwnStickerIDs(ownerID);
-    return stickerIDs.map(stickerID => StickerStore.getSticker(stickerID));
+    return stickerIDs
+      .map(stickerID => StickerStore.getSticker(stickerID))
+      .map(({
+        stickerID,
+        tagIDs,
+        description,
+        type,
+      }) => ({
+        stickerID,
+        tags: tagIDs.map(tagID => TagStore.getTagInfo(tagID)),
+        description,
+        type,
+      }));
   },
   ownTags: (parent, { ownerID }) => {
     const tagIDs = UserStore.getOwnTagIDs(ownerID);

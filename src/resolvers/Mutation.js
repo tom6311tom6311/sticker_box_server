@@ -201,14 +201,14 @@ const Mutation = {
       message: ResponseMessage.CANCEL_SUBSCRIBE_TAG.INFO.SUCCESS,
     };
   },
-  kickSubscribeTag(
+  kickSubscribers(
     parent,
     {
       arg: {
         userID,
         sessionID,
         tagID,
-        kickUserID,
+        kickUserIDs,
       },
     },
   ) {
@@ -220,7 +220,7 @@ const Mutation = {
         message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.TAG_ID_EMPTY,
       };
     }
-    if (!kickUserID) {
+    if (!kickUserIDs || kickUserIDs.length === 0) {
       return {
         success: false,
         message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.KICK_USER_ID_EMPTY,
@@ -239,22 +239,29 @@ const Mutation = {
         message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.TAG_NOT_YOUR_OWN,
       };
     }
-    const kickUserInfo = UserStore.getUserInfo(kickUserID);
-    if (kickUserInfo === null) {
+    let someUserNotExist = false;
+    kickUserIDs.forEach((kickUserID) => {
+      const kickUserInfo = UserStore.getUserInfo(kickUserID);
+      if (kickUserInfo === null) {
+        someUserNotExist = true;
+        return;
+      }
+      const user = UserStore.getUser(userID);
+      UserStore.updateUser({
+        userID: kickUserID,
+        subscribedTagIDs: user.subscribedTagIDs.filter(tid => tid !== tagID),
+      });
+      TagStore.updateTag({
+        tagID,
+        subscriberIDs: tag.subscriberIDs.filter(sid => sid !== kickUserID),
+      });
+    });
+    if (someUserNotExist) {
       return {
         success: false,
         message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.KICK_USER_NOT_EXIST,
       };
     }
-    const user = UserStore.getUser(userID);
-    UserStore.updateUser({
-      userID: kickUserID,
-      subscribedTagIDs: user.subscribedTagIDs.filter(tid => tid !== tagID),
-    });
-    TagStore.updateTag({
-      tagID,
-      subscriberIDs: tag.subscriberIDs.filter(sid => sid !== kickUserID),
-    });
     return {
       success: true,
       message: ResponseMessage.KICK_SUBSCRIBE_TAG.INFO.SUCCESS,

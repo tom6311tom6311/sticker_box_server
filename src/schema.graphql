@@ -1,7 +1,7 @@
 type Query {
   imgSearch(searchTerm: String): [Sticker!]!
-  tagSearch(searchKey: String): [TagSearchResponseItem!]!
-  ownStickers(ownerID: ID!): [Sticker!]!
+  tagSearch(searchKey: String, num: Int): [TagSearchResponseItem!]!
+  ownStickers(ownerID: ID!): [OwnStickersResponseItem!]!
   ownTags(ownerID: ID!): [Tag!]!
 }
 
@@ -11,7 +11,7 @@ type Mutation {
   createTag(arg: CreateTagInput!): GeneralResponse!
   subscribeTag(arg: SubscribeTagInput!): GeneralResponse!
   cancelSubscribeTag(arg: CancelSubscribeTagInput!): GeneralResponse!
-  kickSubscribeTag(arg: KickSubscribeTagInput!): GeneralResponse!
+  kickSubscribers(arg: KickSubscribersInput!): GeneralResponse!
   deleteTag(arg: DeleteTagInput!): GeneralResponse!
   uploadSticker(arg: UploadStickerInput!): GeneralResponse!
   updateSticker(arg: UpdateStickerInput!): GeneralResponse!
@@ -52,6 +52,12 @@ type UserInfo {
   name: String!
 }
 
+type TagInfo {
+  tagID: ID!
+  ownerID: ID!
+  key: String!
+}
+
 type GeneralResponse {
   success: Boolean!
   message: String!
@@ -59,7 +65,15 @@ type GeneralResponse {
 
 type TagSearchResponseItem {
   tagID: ID!
+  key: String!
   owner: UserInfo!
+}
+
+type OwnStickersResponseItem {
+  stickerID: ID!
+  tags: [TagInfo!]!
+  description: String!
+  type: String!
 }
 
 input LoginInput {
@@ -102,11 +116,11 @@ input CancelSubscribeTagInput {
   tagID: ID!
 }
 
-input KickSubscribeTagInput {
+input KickSubscribersInput {
   userID: ID!
   sessionID: ID!
   tagID: ID!
-  kickUserID: ID!
+  kickUserIDs: [ID!]!
 }
 
 input DeleteTagInput {
