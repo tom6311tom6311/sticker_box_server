@@ -335,7 +335,7 @@ const Mutation = {
         message: ResponseMessage.UPLOAD_STICKER.ERROR.FILE_NOT_EXIST,
       };
     }
-    if (AppConfig.ALLOWED_FORMAT.findIndex(type) === -1) {
+    if (AppConfig.ALLOWED_FORMAT.findIndex(f => f === type) === -1) {
       fs.unlinkSync(imgPath);
       return {
         success: false,

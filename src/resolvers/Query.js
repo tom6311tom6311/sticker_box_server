@@ -8,6 +8,7 @@ import TagStore from '../class/TagStore/TagStore.class';
 const Query = {
   imgSearch: (parent, { searchTerm }) => {
     const stickerIDs = TermMatcher.match(AppConfig.TERM_LIB.STICKER, searchTerm || '', AppConfig.DEFAULT_IMG_SEARCH_RESP_SIZE);
+    console.log(stickerIDs);
     return stickerIDs.map(stickerID => StickerStore.getSticker(stickerID));
   },
   tagSearch: (parent, { searchKey }) => {
