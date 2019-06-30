@@ -53,7 +53,7 @@ const Mutation = {
   },
   register(parent, { arg: { userID, password, name } }) {
     const user = UserStore.getUser(userID);
-    if (user !== undefined) {
+    if (user !== null) {
       return {
         success: false,
         message: ResponseMessage.REGISTER.ERROR.USER_ID_EXISTED,
