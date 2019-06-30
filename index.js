@@ -9,20 +9,24 @@ import imgListRouter from './routes/ImgList.route';
 import TermMatcher from './util/TermMatcher.class';
 import Query from './src/resolvers/Query';
 import Mutation from './src/resolvers/Mutation';
+import TagStore from './src/class/TagStore/TagStore.class';
+import StickerStore from './src/class/StickerStore/StickerStore.class';
 // import Subscription from './resolvers/Subscription'
 
 // initialize term-matcher
-const stickerTerms = Object
-  .values(db.stickers)
-  .map(({ stickerID, description }) => ({ id: stickerID, term: description }));
-
 const tagTerms = Object
   .values(db.tags)
   .map(({ tagID, key }) => ({ id: tagID, term: key }));
 
 TermMatcher.loadWordLib(() => {
-  TermMatcher.updateTerms(AppConfig.TERM_LIB.STICKER, stickerTerms);
   TermMatcher.updateTerms(AppConfig.TERM_LIB.TAG, tagTerms);
+  tagTerms.forEach(({ id: tagID }) => {
+    const { stickerIDs } = TagStore.getTag(tagID);
+    const stickerTerms = stickerIDs
+      .map(stickerID => StickerStore.getSticker(stickerID))
+      .map(({ stickerID, description }) => ({ id: stickerID, term: description }));
+    TermMatcher.updateTerms(`${AppConfig.TERM_LIB.STICKER}_${tagID}`, stickerTerms);
+  });
   console.log('TermMatcher initialized.');
 });
 

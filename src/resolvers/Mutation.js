@@ -217,54 +217,46 @@ const Mutation = {
     if (!tagID) {
       return {
         success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.TAG_ID_EMPTY,
+        message: ResponseMessage.KICK_SUBSCRIBERS.ERROR.TAG_ID_EMPTY,
       };
     }
     if (!kickUserIDs || kickUserIDs.length === 0) {
       return {
         success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.KICK_USER_ID_EMPTY,
+        message: ResponseMessage.KICK_SUBSCRIBERS.ERROR.KICK_USER_ID_EMPTY,
       };
     }
     const tag = TagStore.getTag(tagID);
     if (tag === null) {
       return {
         success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.TAG_NOT_EXIST,
+        message: ResponseMessage.KICK_SUBSCRIBERS.ERROR.TAG_NOT_EXIST,
       };
     }
     if (tag.ownerID !== userID) {
       return {
         success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.TAG_NOT_YOUR_OWN,
+        message: ResponseMessage.KICK_SUBSCRIBERS.ERROR.TAG_NOT_YOUR_OWN,
       };
     }
-    let someUserNotExist = false;
     kickUserIDs.forEach((kickUserID) => {
-      const kickUserInfo = UserStore.getUserInfo(kickUserID);
-      if (kickUserInfo === null) {
-        someUserNotExist = true;
+      const kickUser = UserStore.getUser(kickUserID);
+      if (kickUser === null) {
         return;
       }
-      const user = UserStore.getUser(userID);
       UserStore.updateUser({
         userID: kickUserID,
-        subscribedTagIDs: user.subscribedTagIDs.filter(tid => tid !== tagID),
-      });
-      TagStore.updateTag({
-        tagID,
-        subscriberIDs: tag.subscriberIDs.filter(sid => sid !== kickUserID),
+        subscribedTagIDs: kickUser.subscribedTagIDs.filter(tid => tid !== tagID),
       });
     });
-    if (someUserNotExist) {
-      return {
-        success: false,
-        message: ResponseMessage.KICK_SUBSCRIBE_TAG.ERROR.KICK_USER_NOT_EXIST,
-      };
-    }
+    TagStore.updateTag({
+      tagID,
+      subscriberIDs: tag.subscriberIDs.filter(sid => kickUserIDs.indexOf(sid) === -1),
+    });
+    console.log(TagStore.getTag(tagID));
     return {
       success: true,
-      message: ResponseMessage.KICK_SUBSCRIBE_TAG.INFO.SUCCESS,
+      message: ResponseMessage.KICK_SUBSCRIBERS.INFO.SUCCESS,
     };
   },
   deleteTag(parent, { arg: { userID, sessionID, tagID } }) {
@@ -342,7 +334,7 @@ const Mutation = {
         message: ResponseMessage.UPLOAD_STICKER.ERROR.FILE_NOT_EXIST,
       };
     }
-    if (AppConfig.ALLOWED_FORMAT.findIndex(f => f === type) === -1) {
+    if (AppConfig.ALLOWED_FORMAT.indexOf(type) === -1) {
       fs.unlinkSync(imgPath);
       return {
         success: false,
@@ -420,11 +412,13 @@ const Mutation = {
       };
     }
     if (description) {
-      TermMatcher.deleteTerm(AppConfig.TERM_LIB.STICKER, stickerID);
-      TermMatcher.updateTerms(AppConfig.TERM_LIB.STICKER, [{ id: stickerID, term: description }]);
       StickerStore.updateSticker({
         stickerID,
         description,
+      });
+      sticker.tagIDs.forEach((tagID) => {
+        TermMatcher.deleteTerm(`${AppConfig.TERM_LIB.STICKER}_${tagID}`, stickerID);
+        TermMatcher.updateTerms(`${AppConfig.TERM_LIB.STICKER}_${tagID}`, [{ id: stickerID, term: description }]);
       });
     }
     if (tagIDs && tagIDs.some(tagID => TagStore.getTag(tagID) === null)) {
@@ -435,7 +429,7 @@ const Mutation = {
     }
     if (
       tagIDs
-      && tagIDs.some(tagID => TagStore.getTag(tagID).subscriberIDs.findIndex(userID) === -1)
+      && tagIDs.some(tagID => TagStore.getTag(tagID).subscriberIDs.indexOf(userID) === -1)
     ) {
       return {
         success: false,
@@ -449,7 +443,7 @@ const Mutation = {
       });
       tagIDs.forEach((tagID) => {
         const tag = TagStore.getTag(tagID);
-        if (tag.stickerIDs.findIndex(stickerID) !== -1) return;
+        if (tag.stickerIDs.indexOf(stickerID) !== -1) return;
         TagStore.updateTag({
           tagID,
           stickerIDs: [...tag.stickerIDs, stickerID],
@@ -489,13 +483,13 @@ const Mutation = {
         tagID,
         stickerIDs: tag.stickerIDs.filter(sid => sid !== stickerID),
       });
+      TermMatcher.deleteTerm(`${AppConfig.TERM_LIB.STICKER}_${tagID}`, stickerID);
     });
     const user = UserStore.getUser(userID);
     UserStore.updateUser({
       userID,
       ownStickerIDs: user.ownStickerIDs.filter(sid => sid !== stickerID),
     });
-    TermMatcher.deleteTerm(AppConfig.TERM_LIB.STICKER, stickerID);
     StickerStore.deleteSticker(stickerID);
     return {
       success: true,
@@ -504,4 +498,4 @@ const Mutation = {
   },
 };
 
-export { Mutation as default };
+export default Mutation;

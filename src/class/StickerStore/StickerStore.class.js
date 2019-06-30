@@ -9,6 +9,18 @@ class StickerStore {
     return this.stickers[stickerID] || {};
   }
 
+  getStickerInfo(stickerID) {
+    const { ownerID, description, type } = this.stickers[stickerID] || {};
+    return ownerID !== undefined
+      ? {
+        stickerID,
+        ownerID,
+        description,
+        type,
+      }
+      : null;
+  }
+
   addSticker({
     stickerID,
     ownerID,

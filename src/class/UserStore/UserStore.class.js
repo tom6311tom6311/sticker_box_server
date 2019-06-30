@@ -62,6 +62,10 @@ class UserStore {
   getOwnTagIDs(ownerID) {
     return this.users[ownerID].ownTagIDs || [];
   }
+
+  getSubscribedTagIDs(userID) {
+    return this.users[userID].subscribedTagIDs || [];
+  }
 }
 
 export default new UserStore();

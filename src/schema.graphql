@@ -1,8 +1,9 @@
 type Query {
-  imgSearch(searchTerm: String): [Sticker!]!
+  imgSearch(arg: ImgSearchInput!): ImgSearchResponse!
   tagSearch(searchKey: String, num: Int): [TagSearchResponseItem!]!
   ownStickers(ownerID: ID!): [OwnStickersResponseItem!]!
   ownTags(ownerID: ID!): [Tag!]!
+  subscribedTags(userID: ID!): [TagInfo!]!
 }
 
 type Mutation {
@@ -52,6 +53,13 @@ type UserInfo {
   name: String!
 }
 
+type StickerInfo {
+  stickerID: ID!
+  ownerID: ID!
+  description: String!
+  type: String!
+}
+
 type TagInfo {
   tagID: ID!
   ownerID: ID!
@@ -61,6 +69,18 @@ type TagInfo {
 type GeneralResponse {
   success: Boolean!
   message: String!
+}
+
+type ImgSearchResponse {
+  success: Boolean!
+  message: String!
+  searchResult: [ImgSearchResponseItem!]
+}
+
+type ImgSearchResponseItem {
+  tagID: ID!
+  tagKey: String!
+  stickers: [StickerInfo!]!
 }
 
 type TagSearchResponseItem {
@@ -76,6 +96,12 @@ type OwnStickersResponseItem {
   type: String!
 }
 
+input ImgSearchInput {
+  userID: ID!
+  sessionID: ID!
+  searchTerm: String!
+}
+
 input LoginInput {
   userID: ID!
   password: String!
@@ -86,8 +112,6 @@ type LoginResponse {
   message: String!
   userID: ID
   name: String
-  ownTagIDs: [ID!]
-  subscribedTagIDs: [ID!]
   sessionID: ID
 }
 
