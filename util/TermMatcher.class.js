@@ -45,8 +45,8 @@ class TermMatcher {
         id,
         term,
         vecList: nodejieba.cut(term)
-          .map(w => this.wordLib[w])
-          .filter(v => v !== undefined),
+          .map((w) => this.wordLib[w])
+          .filter((v) => v !== undefined),
       });
     });
   }
@@ -62,8 +62,8 @@ class TermMatcher {
   match(termLib, term, num) {
     if (this.termLibs[termLib] === undefined) return [];
     const vecList = nodejieba.cut(term)
-      .map(w => this.wordLib[w])
-      .filter(v => v !== undefined);
+      .map((w) => this.wordLib[w])
+      .filter((v) => v !== undefined);
     if (term === '' || vecList.length === 0) {
       return randomChoice(
         this.termLibs[termLib].map(({ id }) => id),

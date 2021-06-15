@@ -6,7 +6,6 @@ import TagStore from '../class/TagStore/TagStore.class';
 import authenticate from './common/authenticate.func';
 import ResponseMessage from '../../const/ResponseMessage.const';
 
-
 const Query = {
   imgSearch: (parent, { arg: { userID, sessionID, searchTerm } }) => {
     const authResponse = authenticate({ userID, sessionID });
@@ -16,7 +15,7 @@ const Query = {
     const { subscribedTagIDs } = UserStore.getUser(userID);
     subscribedTagIDs.forEach((tagID) => {
       const stickerIDs = TermMatcher.match(`${AppConfig.TERM_LIB.STICKER}_${tagID}`, searchTerm || '', AppConfig.DEFAULT_IMG_SEARCH_RESP_SIZE);
-      const stickers = stickerIDs.map(stickerID => StickerStore.getStickerInfo(stickerID));
+      const stickers = stickerIDs.map((stickerID) => StickerStore.getStickerInfo(stickerID));
       searchResult.push({
         tagID,
         tagKey: TagStore.getTag(tagID).key,
@@ -32,7 +31,7 @@ const Query = {
   tagSearch: (parent, { searchKey, num }) => {
     const tagIDs = TermMatcher.match(AppConfig.TERM_LIB.TAG, searchKey || '', num || AppConfig.DEFAULT_TAG_SEARCH_RESP_SIZE);
     return tagIDs
-      .map(tagID => TagStore.getTag(tagID))
+      .map((tagID) => TagStore.getTag(tagID))
       .map(({ tagID, key, ownerID }) => ({
         tagID,
         key,
@@ -42,7 +41,7 @@ const Query = {
   ownStickers: (parent, { ownerID }) => {
     const stickerIDs = UserStore.getOwnStickerIDs(ownerID);
     return stickerIDs
-      .map(stickerID => StickerStore.getSticker(stickerID))
+      .map((stickerID) => StickerStore.getSticker(stickerID))
       .map(({
         stickerID,
         tagIDs,
@@ -50,18 +49,18 @@ const Query = {
         type,
       }) => ({
         stickerID,
-        tags: tagIDs.map(tagID => TagStore.getTagInfo(tagID)),
+        tags: tagIDs.map((tagID) => TagStore.getTagInfo(tagID)),
         description,
         type,
       }));
   },
   ownTags: (parent, { ownerID }) => {
     const tagIDs = UserStore.getOwnTagIDs(ownerID);
-    return tagIDs.map(tagID => TagStore.getTag(tagID));
+    return tagIDs.map((tagID) => TagStore.getTag(tagID));
   },
   subscribedTags: (parent, { userID }) => {
     const tagIDs = UserStore.getSubscribedTagIDs(userID);
-    return tagIDs.map(tagID => TagStore.getTagInfo(tagID));
+    return tagIDs.map((tagID) => TagStore.getTagInfo(tagID));
   },
 };
 

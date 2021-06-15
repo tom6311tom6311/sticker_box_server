@@ -20,7 +20,7 @@ const loadWordVector = (modelPath, callback = () => {}) => {
       bar = new ProgressBar('Loading word vectors: [:bar] :percent :etas', { total: libSize });
     } else if (items.length === dim + 2) {
       const w = items.shift();
-      wordLib[w] = items.slice(0, dim).map(s => parseFloat(s));
+      wordLib[w] = items.slice(0, dim).map((s) => parseFloat(s));
       bar.tick();
     }
   });

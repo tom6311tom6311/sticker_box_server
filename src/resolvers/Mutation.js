@@ -190,11 +190,11 @@ const Mutation = {
     const user = UserStore.getUser(userID);
     UserStore.updateUser({
       userID,
-      subscribedTagIDs: user.subscribedTagIDs.filter(tid => tid !== tagID),
+      subscribedTagIDs: user.subscribedTagIDs.filter((tid) => tid !== tagID),
     });
     TagStore.updateTag({
       tagID,
-      subscriberIDs: tag.subscriberIDs.filter(sid => sid !== userID),
+      subscriberIDs: tag.subscriberIDs.filter((sid) => sid !== userID),
     });
     return {
       success: true,
@@ -246,12 +246,12 @@ const Mutation = {
       }
       UserStore.updateUser({
         userID: kickUserID,
-        subscribedTagIDs: kickUser.subscribedTagIDs.filter(tid => tid !== tagID),
+        subscribedTagIDs: kickUser.subscribedTagIDs.filter((tid) => tid !== tagID),
       });
     });
     TagStore.updateTag({
       tagID,
-      subscriberIDs: tag.subscriberIDs.filter(sid => kickUserIDs.indexOf(sid) === -1),
+      subscriberIDs: tag.subscriberIDs.filter((sid) => kickUserIDs.indexOf(sid) === -1),
     });
     console.log(TagStore.getTag(tagID));
     return {
@@ -285,7 +285,7 @@ const Mutation = {
     tag.subscriberIDs.forEach((subscriberID) => {
       UserStore.updateUser({
         userID: subscriberID,
-        subscribedTagIDs: user.subscribedTagIDs.filter(tid => tid !== tagID),
+        subscribedTagIDs: user.subscribedTagIDs.filter((tid) => tid !== tagID),
       });
     });
     TermMatcher.deleteTerm(AppConfig.TERM_LIB.TAG, tagID);
@@ -421,7 +421,7 @@ const Mutation = {
         TermMatcher.updateTerms(`${AppConfig.TERM_LIB.STICKER}_${tagID}`, [{ id: stickerID, term: description }]);
       });
     }
-    if (tagIDs && tagIDs.some(tagID => TagStore.getTag(tagID) === null)) {
+    if (tagIDs && tagIDs.some((tagID) => TagStore.getTag(tagID) === null)) {
       return {
         success: false,
         message: ResponseMessage.UPDATE_STICKER.ERROR.SOME_TAGS_NOT_EXIST,
@@ -429,7 +429,7 @@ const Mutation = {
     }
     if (
       tagIDs
-      && tagIDs.some(tagID => TagStore.getTag(tagID).subscriberIDs.indexOf(userID) === -1)
+      && tagIDs.some((tagID) => TagStore.getTag(tagID).subscriberIDs.indexOf(userID) === -1)
     ) {
       return {
         success: false,
@@ -481,14 +481,14 @@ const Mutation = {
       const tag = TagStore.getTag(tagID);
       TagStore.updateTag({
         tagID,
-        stickerIDs: tag.stickerIDs.filter(sid => sid !== stickerID),
+        stickerIDs: tag.stickerIDs.filter((sid) => sid !== stickerID),
       });
       TermMatcher.deleteTerm(`${AppConfig.TERM_LIB.STICKER}_${tagID}`, stickerID);
     });
     const user = UserStore.getUser(userID);
     UserStore.updateUser({
       userID,
-      ownStickerIDs: user.ownStickerIDs.filter(sid => sid !== stickerID),
+      ownStickerIDs: user.ownStickerIDs.filter((sid) => sid !== stickerID),
     });
     StickerStore.deleteSticker(stickerID);
     return {

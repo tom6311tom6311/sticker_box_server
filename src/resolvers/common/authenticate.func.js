@@ -1,7 +1,6 @@
 import ResponseMessage from '../../../const/ResponseMessage.const';
 import UserStore from '../../class/UserStore/UserStore.class';
 
-
 const authenticate = ({ userID, sessionID }) => {
   if (!userID) {
     return {
